@@ -6,7 +6,7 @@ const DisclaimerComponent: React.FC<DisclaimerComponentProps> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-col p-4 gap-4 items-center justify-center text-center border border-muted rounded-lg w-fit">
+    <div className="container flex flex-col p-4 gap-2 items-center justify-center text-center border border-muted rounded-lg">
       <p className="text-red-500 uppercase font-semibold">Disclaimer</p>
       <p className="text-sm">{children}</p>
     </div>
