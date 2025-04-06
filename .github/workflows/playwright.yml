@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Playwright tests against live site
         env:
-          URL: ${{ steps.wait-vercel.outputs.preview-url }}
+          URL: https://iplogger-test.vercel.app/
         run: |
           echo "Running against $URL"
           npx playwright test
