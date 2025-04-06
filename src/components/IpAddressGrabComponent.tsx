@@ -30,8 +30,9 @@ const IpAddressGrabComponent: React.FC = () => {
     if (ipAddress && ipAddress !== FAILED_TEXT) {
       const fetchLocation = async () => {
         try {
-          const res = await fetch(`http://ip-api.com/json/${ipAddress}`);
+          const res = await fetch(`https://ipwho.is/${ipAddress}`);
           const data = await res.json();
+          console.log("roby -> fetchLocation -> data:", data);
           setLocation(data);
         } catch (error) {
           toast.error(FAILED_LOC);

@@ -1,25 +1,58 @@
+// types.ts
 export type LocationType = {
-  query: string;
-  status: string;
+  ip: string;
+  success: boolean;
+  type: string;
   continent: string;
-  continentCode: string;
+  continent_code: string;
   country: string;
-  countryCode: string;
+  country_code: string;
   region: string;
-  regionName: string;
+  region_code: string;
   city: string;
-  district: string;
-  zip: string;
-  lat: number;
-  lon: number;
-  timezone: string;
-  offset: number;
-  currency: string;
-  isp: string;
-  org: string;
-  as: string;
-  asname: string;
-  mobile: boolean;
-  proxy: boolean;
-  hosting: boolean;
+  latitude: number;
+  longitude: number;
+  is_eu: boolean;
+  postal: string;
+  calling_code: string;
+  capital: string;
+  borders: string;
+
+  flag: {
+    img: string;
+    emoji: string;
+    emoji_unicode: string;
+  };
+
+  connection: {
+    asn: number;
+    org: string;
+    isp: string;
+    domain: string;
+  };
+
+  timezone: {
+    id: string;
+    abbr: string;
+    is_dst: boolean;
+    offset: number;
+    utc: string;
+    current_time: string;
+  };
+
+  currency: {
+    name: string;
+    code: string;
+    symbol: string;
+    plural: string;
+    exchange_rate: number;
+  };
+
+  security: {
+    anonymous: boolean;
+    proxy: boolean;
+    vpn: boolean;
+    tor: boolean;
+    hosting: boolean;
+  };
 };
