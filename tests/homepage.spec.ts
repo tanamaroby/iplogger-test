@@ -25,6 +25,10 @@ test.describe("Homepage", () => {
       "Please do not use this illegally"
     );
   });
+
+  test("Has header", async ({ page }) => {
+    await expect(page.locator("text=See where you are")).toBeVisible();
+  });
 });
 
 test.describe("IpAddressGrabComponent", () => {
@@ -94,6 +98,54 @@ test.describe("IpAddressGrabComponent", () => {
     await expect(
       page.locator('[data-testid="location-card"]')
     ).not.toBeVisible();
+  });
+
+  test("Should have a link for google maps", async ({ page }) => {
+    await page.route("https://api.ipify.org?format=json", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ip: "123.45.67.89" }),
+      });
+    });
+
+    await page.route("https://ip-api.com/json/*", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          query: "123.45.67.89",
+          status: "success",
+          continent: "Test Continent",
+          continentCode: "TC",
+          country: "Neverland",
+          countryCode: "NL",
+          region: "NL-01",
+          regionName: "Imaginary Region",
+          city: "Fantasy City",
+          district: "District 9",
+          zip: "99999",
+          lat: 1.234,
+          lon: 2.345,
+          timezone: "Dream/Time",
+          offset: 0,
+          currency: "NLD",
+          isp: "Imaginary ISP",
+          org: "MagicOrg",
+          as: "AS12345",
+          asname: "MagicNet",
+          mobile: false,
+          proxy: false,
+          hosting: false,
+        }),
+      });
+    });
+
+    await page.goto("/");
+
+    await expect(
+      page.locator('[data-testid="google-maps-link"]')
+    ).toBeVisible();
   });
 });
 

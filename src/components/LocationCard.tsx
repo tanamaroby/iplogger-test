@@ -85,6 +85,16 @@ const LocationCard: React.FC<Props> = ({ location }) => {
       ) : (
         <p className="text-center text-zinc-500">Loading map…</p>
       )}
+
+      <a
+        href={`https://www.google.com/maps?q=${location.latitude},${location.longitude}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm underline text-blue-400 hover:text-blue-200 text-center"
+        data-testid="google-maps-link"
+      >
+        View on Google Maps
+      </a>
     </div>
   );
 };

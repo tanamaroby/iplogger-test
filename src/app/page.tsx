@@ -6,6 +6,10 @@ import { DISCLAIMER_TEXT, TITLE_TEXT } from "@/lib/constants";
 export default function Home() {
   return (
     <div className="flex flex-col p-4 gap-6 items-center">
+      <header className="text-center space-y-2 p-4">
+        <h1 className="text-3xl font-bold">🔍 IP & Location Logger</h1>
+        <p className="text-zinc-400">See where you are on the internet 👀</p>
+      </header>
       <TitleComponent description="This is a test site. Please do not take this site seriously">
         {TITLE_TEXT}
       </TitleComponent>
