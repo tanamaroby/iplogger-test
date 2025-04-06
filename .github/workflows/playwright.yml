@@ -1,10 +1,8 @@
-# .github/workflows/playwright.yml
 name: Playwright E2E Tests
 
 on:
   push:
     branches: [main]
-  pull_request:
 
 permissions:
   contents: read
@@ -35,10 +33,12 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: "--prod"
           working-directory: ./
+          github-comment: false
+          github-deployment: false
 
       - name: Run Playwright tests against live site
         env:
-          MAIN_URL: ${{ steps.wait-vercel.outputs.preview-url }}
+          URL: ${{ steps.wait-vercel.outputs.preview-url }}
         run: |
-          echo "Running against $MAIN_URL"
+          echo "Running against $URL"
           npx playwright test
