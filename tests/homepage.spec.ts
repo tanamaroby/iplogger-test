@@ -96,3 +96,36 @@ test.describe("IpAddressGrabComponent", () => {
     ).not.toBeVisible();
   });
 });
+
+test.describe("Footer", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should be visible at the bottom", async ({ page }) => {
+    const footer = page.locator("footer");
+    await expect(footer).toBeVisible();
+  });
+
+  test("should show author name and GitHub link", async ({ page }) => {
+    await expect(page.locator("text=Made with ❤️ by")).toBeVisible();
+    const githubLink = page.locator('a[href="https://github.com/tanamaroby"]');
+    await expect(githubLink).toBeVisible();
+    await expect(githubLink).toHaveText(/Roby Tanama/);
+  });
+
+  test("should show disclaimer", async ({ page }) => {
+    await expect(
+      page.locator(
+        "text=This website is for learning, testing, and demo purposes only"
+      )
+    ).toBeVisible();
+  });
+
+  test("should show copyright", async ({ page }) => {
+    const currentYear = new Date().getFullYear();
+    await expect(
+      page.locator(`text=© ${currentYear} All rights reserved`)
+    ).toBeVisible();
+  });
+});
