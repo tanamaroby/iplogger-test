@@ -1,38 +1,34 @@
 import { DISCLAIMER_TEXT, TITLE_TEXT } from "@/lib/constants";
 import { expect, test } from "@playwright/test";
 
-test("has title", async ({ page }) => {
-  await page.goto(process.env.MAIN_URL || "http://localhost:3000");
+test.describe("Homepage", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(TITLE_TEXT);
-});
+  test("has title", async ({ page }) => {
+    await expect(page.locator(`text=${TITLE_TEXT}`)).toBeVisible();
+  });
 
-test("has disclaimer", async ({ page }) => {
-  await page.goto(process.env.MAIN_URL || "http://localhost:3000");
+  test("has disclaimer", async ({ page }) => {
+    await expect(page.locator("text=Disclaimer")).toBeVisible();
+    await expect(page.locator(`text=${DISCLAIMER_TEXT}`)).toBeVisible();
+  });
 
-  await expect(page.locator("text=Disclaimer")).toBeVisible();
-  await expect(page.locator(`text=${DISCLAIMER_TEXT}`)).toBeVisible();
-});
+  test("renders metadata", async ({ page }) => {
+    const metaTitle = await page.title();
+    expect(metaTitle).toBe("IP Grabber");
 
-test("renders metadata", async ({ page }) => {
-  await page.goto(process.env.MAIN_URL || "http://localhost:3000");
-
-  // Check if the metadata title is correct
-  const metaTitle = await page.title();
-  expect(metaTitle).toBe("Test Site");
-
-  // Check if the metadata description is present
-  const metaDescription = page.locator('meta[name="description"]');
-  await expect(metaDescription).toHaveAttribute(
-    "content",
-    "Please do not take this site seriously"
-  );
+    const metaDescription = page.locator('meta[name="description"]');
+    await expect(metaDescription).toHaveAttribute(
+      "content",
+      "Please do not use this illegally"
+    );
+  });
 });
 
 test.describe("IpAddressGrabComponent", () => {
-  test("should fetch and display the IP address", async ({ page }) => {
-    // Intercept the API request and mock the response
+  test("should fetch and display IP and location", async ({ page }) => {
     await page.route("https://api.ipify.org?format=json", (route) => {
       route.fulfill({
         status: 200,
@@ -41,32 +37,62 @@ test.describe("IpAddressGrabComponent", () => {
       });
     });
 
-    // Navigate to the page where the component is rendered
-    await page.goto(process.env.MAIN_URL || "http://localhost:3000");
-
-    // Wait for the IP address to be displayed
-    const ipAddress = page.locator("text=123.45.67.89");
-    await expect(ipAddress).toBeVisible();
-
-    const loader = page.locator('[data-testid="loader"]');
-    await expect(loader).not.toBeVisible();
-  });
-
-  test("should not show IP if API call fails", async ({ page }) => {
-    // Intercept the API request and mock a failure response
-    await page.route("https://api.ipify.org?format=json", (route) => {
-      const mockResponse = {
-        status: 500,
+    await page.route("https://ip-api.com/json/*", (route) => {
+      route.fulfill({
+        status: 200,
         contentType: "application/json",
-        body: JSON.stringify({ error: "Internal Server Error" }),
-      };
-      route.fulfill(mockResponse);
+        body: JSON.stringify({
+          query: "123.45.67.89",
+          status: "success",
+          continent: "Test Continent",
+          continentCode: "TC",
+          country: "Neverland",
+          countryCode: "NL",
+          region: "NL-01",
+          regionName: "Imaginary Region",
+          city: "Fantasy City",
+          district: "District 9",
+          zip: "99999",
+          lat: 1.234,
+          lon: 2.345,
+          timezone: "Dream/Time",
+          offset: 0,
+          currency: "NLD",
+          isp: "Imaginary ISP",
+          org: "MagicOrg",
+          as: "AS12345",
+          asname: "MagicNet",
+          mobile: false,
+          proxy: false,
+          hosting: false,
+        }),
+      });
     });
 
-    // Navigate to the page where the component is rendered
-    await page.goto(process.env.MAIN_URL || "http://localhost:3000");
+    await page.goto("/");
 
-    const loader = page.locator('[data-testid="loader"]');
-    await expect(loader).toBeVisible();
+    const ipText = page.locator("text=123.45.67.89");
+    await expect(ipText).toBeVisible();
+
+    const locationLoader = page.locator('[data-testid="loader2"]');
+    await locationLoader.waitFor({ state: "detached" });
+
+    await expect(page.locator('[data-testid="location-card"]')).toBeVisible();
+  });
+
+  test("Don't show location card if IP isn't found", async ({ page }) => {
+    await page.route("https://api.ipify.org?format=json", (route) => {
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Fail" }),
+      });
+    });
+
+    await page.goto("/");
+
+    await expect(
+      page.locator('[data-testid="location-card"]')
+    ).not.toBeVisible();
   });
 });
