@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 IPLogger Test
 
-## Getting Started
+Live site: [https://iplogger-test.vercel.app](https://iplogger-test.vercel.app)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📌 About
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This is a simple IP logging and location tracker site built with Next.js. It displays your public IP address and fetches basic location data using IP-based geolocation.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+It's primarily used as a **personal playground for learning**, testing tools like Playwright, Google Maps, and handling client-side data fetching in modern web apps.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Future Plans
 
-To learn more about Next.js, take a look at the following resources:
+- 🗺️ Add more detailed **geolocation** (lat/lng + map)
+- 📍 Enable tracking of **specific IPs** (with user consent)
+- 🔗 Allow **link forwarding** to help others discover their own IPs
+- 📦 Store recent logs for debugging/testing (again, with consent)
+- 🛠️ And many more features as it evolves
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚠️ Disclaimer
 
-## Deploy on Vercel
+> This website is **strictly for educational and testing purposes**.  
+> Do not use this site or its codebase to collect IPs or geolocation data **without explicit user consent**.  
+> You are responsible for ensuring compliance with local laws and ethical usage.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 👨‍💻 Made by [Roby Tanama](https://github.com/tanamaroby)
